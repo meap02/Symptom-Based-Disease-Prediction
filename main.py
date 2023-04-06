@@ -1,9 +1,10 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import pickle
 # -------------------------- Models -------------------------- #
 from sklearn.svm import SVC
-from sklearn.tree import DecisionTreeClassifier
+from sklearn import tree
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import CategoricalNB
 from sklearn.neural_network import MLPClassifier
@@ -27,6 +28,18 @@ x = oe.fit_transform(x)
 
 #x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.16, train_size=0.84, random_state=42)
 # -------------------------- Models -------------------------- #
-tree = DecisionTreeClassifier(criterion='entropy', random_state=42)
-scores = cross_val_score(tree, x, y, cv=6, scoring='recall_macro')
+clf = tree.DecisionTreeClassifier(criterion='entropy', random_state=42)
+scores = cross_val_score(clf, x, y, cv=6, scoring='recall_macro')
 print(scores)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.16, train_size=0.84, random_state=42)
+clf.fit(x_train, y_train)  
+print(clf.score(x_test, y_test))
+
+'''
+# -------------------------- Plotting -------------------------- #
+plt.figure()
+tree.plot_tree(clf, feature_names=oe.get_feature_names_out() , class_names=le.classes_, filled=True, rounded=True, fontsize=5,)
+plt.show()
+'''
+# -------------------------- Saving -------------------------- #
+pickle.dump(clf, open('models/decisionTree_.pkl', 'wb'))
