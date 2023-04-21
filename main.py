@@ -9,6 +9,7 @@ from sklearn import tree
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import CategoricalNB
 from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
 from sklearn.multiclass import OneVsRestClassifier, OneVsOneClassifier
 # -------------------------- Preprocessing -------------------------- #
 from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
@@ -27,19 +28,31 @@ oe = OrdinalEncoder()
 y = le.fit_transform(y)
 x = oe.fit_transform(x)
 
-#x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.16, train_size=0.84, random_state=42)
+
+
+
 # -------------------------- Models -------------------------- #
-clf = tree.DecisionTreeClassifier(criterion='entropy', random_state=42)
-scores = cross_val_score(clf, x, y, cv=6, scoring='recall_macro')
-print(scores)
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.16, train_size=0.84, random_state=42)
-clf.fit(x_train, y_train)  
-print(clf.score(x_test, y_test))
+highest_accuracy = 0
+best_estimators = 0
+best_depth = 0
+best_clf = None
+for n in range (1, 100):
+    for m in range(1, 20):
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.16, train_size=0.84)
+        clf = RandomForestClassifier(n_estimators=n, max_depth=m, criterion='entropy')
+        clf.fit(x_train, y_train)
+        score = clf.score(x_test, y_test)
+        if score > highest_accuracy: 
+            highest_accuracy = score
+            best_estimators = n
+            best_depth = m
+            best_clf = clf
+            print("New highest: {highest} with {n} estimators and {m} depth".format(highest=highest_accuracy, n=n, m=m))
+with open('models/randomforest/randomforest.pkl', 'wb') as f:
+    pickle.dump(best_clf, f)
+with open('models/randomforest/randomforest.json', 'w') as f:
+    json.dump({"accuracy":highest_accuracy, "estimators": best_estimators, "depth": best_depth}, f)
+    
 '''
 # -------------------------- Plotting -------------------------- #
-plt.figure()
-tree.plot_tree(clf, feature_names=oe.get_feature_names_out() , class_names=le.classes_, filled=True, rounded=True, fontsize=5,)
-plt.show()
 '''
-# -------------------------- Saving -------------------------- #
-#pickle.dump(clf, open('models/decisionTree_.pkl', 'wb'))
