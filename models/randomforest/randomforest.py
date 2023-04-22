@@ -4,17 +4,11 @@ import matplotlib.pyplot as plt
 import pickle
 import json
 # -------------------------- Models -------------------------- #
-from sklearn.svm import SVC
-from sklearn import tree
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import CategoricalNB
-from sklearn.neural_network import MLPClassifier
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
-from sklearn.multiclass import OneVsRestClassifier, OneVsOneClassifier
+from sklearn.ensemble import RandomForestClassifier
 # -------------------------- Preprocessing -------------------------- #
 from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
 # -------------------------- Metrics -------------------------- #
-from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.model_selection import train_test_split
 
 
 
