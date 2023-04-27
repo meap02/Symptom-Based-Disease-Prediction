@@ -36,11 +36,40 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.16, train_
 clf.fit(x_train, y_train)  
 print(clf.score(x_test, y_test))
 
+#naive-bayes
+
+from sklearn.naive_bayes import GaussianNB
+
+model = GaussianNB()
+
+model.fit(x_train, y_train);
+
+
 '''
 # -------------------------- Plotting -------------------------- #
 plt.figure()
 tree.plot_tree(clf, feature_names=oe.get_feature_names_out() , class_names=le.classes_, filled=True, rounded=True, fontsize=5,)
 plt.show()
 '''
+#for some visualization of the data set
+dataframe.head()
+dataframe.info()
+
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    ConfusionMatrixDisplay,
+    f1_score,
+    classification_report,
+)
+
+y_pred = model.predict(x_test)
+
+accuray = accuracy_score(y_pred, y_test)
+f1 = f1_score(y_pred, y_test, average="weighted")
+
+print("Accuracy:", accuray)
+print("F1 Score:", f1)
+
 # -------------------------- Saving -------------------------- #
-pickle.dump(clf, open('models/decisionTree_.pkl', 'wb'))
+#pickle.dump(clf, open('models/decisionTree_.pkl', 'wb'))
