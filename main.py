@@ -33,10 +33,12 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.16, train_
 e_best_accuracy = 0
 e_best_c = 0
 e_best_kernel = ""
+e_best_model = None
 
 s_best_accuracy = 0
 s_best_c = 0
 s_best_kernel = ""
+s_best_model = None
 
 try:
     with open('models/svm/svm_onevrest.json', 'r') as f:
@@ -58,8 +60,8 @@ try:
 except Exception as e:
     print(e)
 # -------------------------- Models -------------------------- #
-for c in range(17, 30):
-    for kernel in ['poly', 'rbf']:
+for c in range(39, 100):
+    for kernel in ['rbf']:
         print("Attemting {c} C and {kernel} kernel".format(c=c, kernel=kernel))
         single = SVC(C = float(c), kernel=kernel, probability=False)
         ensemble = OneVsRestClassifier(single)
@@ -72,18 +74,20 @@ for c in range(17, 30):
             e_best_accuracy = e_evaluation
             e_best_c = c
             e_best_kernel = kernel
+            e_best_model = ensemble
         if s_evaluation > s_best_accuracy:
             print("New highest single: {highest} with {c} C and {kernel} kernel".format(highest=s_evaluation, c=c, kernel=kernel))
             s_best_accuracy = s_evaluation
             s_best_c = c
             s_best_kernel = kernel
+            s_best_model = single
 
 with open('models/svm/svm.pkl', 'wb') as f:
-    pickle.dump(single, f)
+    pickle.dump(s_best_model, f)
 with open('models/svm/svm.json', 'w') as f:
     json.dump({"accuracy":s_best_accuracy, "c": s_best_c, "kernel": s_best_kernel}, f)
 with open('models/svm/svm_onevrest.pkl', 'wb') as f:
-    pickle.dump(ensemble, f)
+    pickle.dump(e_best_model, f)
 with open('models/svm/svm_onevrest.json', 'w') as f:
     json.dump({"accuracy":e_best_accuracy, "c": e_best_c, "kernel": e_best_kernel}, f)
         
