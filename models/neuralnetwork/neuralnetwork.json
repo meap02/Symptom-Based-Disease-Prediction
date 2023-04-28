@@ -1,0 +1,1 @@
+{"accuracy": 0.9416243654822335, "activation": "logistic", "solver": "lbfgs", "learning_rate": "invscaling"}
