@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import pickle
 import json
 import csv
+from statistics import mean 
 
 # -------------------------- Models -------------------------- #
 from sklearn.naive_bayes import GaussianNB, MultinomialNB, ComplementNB, BernoulliNB, CategoricalNB
@@ -47,27 +48,34 @@ predictedCNB = CNBclf.predict(x_test)
 predictedBNB = BNBclf.predict(x_test)
 predictedCatNB = CatNBclf.predict(x_test)
 
+recallGNBclf = cross_val_score(GNBclf, x, y, cv=6, scoring='recall_macro')
+recallMNBclf = cross_val_score(MNBclf, x, y, cv=6, scoring='recall_macro')
+recallCNBclf = cross_val_score(CNBclf, x, y, cv=6, scoring='recall_macro')
+recallBNBclf = cross_val_score(BNBclf, x, y, cv=6, scoring='recall_macro')
+recallCatNBclf = cross_val_score(CatNBclf, x, y, cv=6, scoring='recall_macro')
+
+
 print("\n--Gaussian Naive Bayes--")
-print("F1-score = ", f1_score(y_test, predictedGNB, average='macro')*100, "%", "\n" 'Accuracy =', accuracy_score(y_test, predictedGNB)*100, "%")
+print("F1-score = ", f1_score(y_test, predictedGNB, average='macro')*100, "%\n" 'Accuracy =', accuracy_score(y_test, predictedGNB)*100, "%\nRecall = ", recallGNBclf, "\n" 'Avg Recall = ', mean(recallGNBclf)*100, "%")
 
 print()
 
 print("\n--Multinomial Naive Bayes--")
-print("F1-score = ", f1_score(y_test, predictedMNB, average='macro')*100, "%", "\n" 'Accuracy =', accuracy_score(y_test, predictedMNB)*100, "%")
+print("F1-score = ", f1_score(y_test, predictedMNB, average='macro')*100, "%\n" 'Accuracy =', accuracy_score(y_test, predictedMNB)*100, "%\nRecall = ", recallMNBclf, "\n" 'Avg Recall = ', mean(recallMNBclf)*100, "%")
 
 print()
 
 print("\n--Complement Naive Bayes--")
-print("F1-score = ", f1_score(y_test, predictedCNB, average='macro')*100, "%", "\n" 'Accuracy =', accuracy_score(y_test, predictedCNB)*100, "%")
+print("F1-score = ", f1_score(y_test, predictedCNB, average='macro')*100, "%\n" 'Accuracy =', accuracy_score(y_test, predictedCNB)*100, "%\nRecall = ", recallCNBclf, "\n" 'Avg Recall = ', mean(recallCNBclf)*100, "%")
 
 print()
 
 print("\n--Bernoulli Naive Bayes--")
-print("F1-score = ", f1_score(y_test, predictedBNB, average='macro')*100, "%", "\n" 'Accuracy =', accuracy_score(y_test, predictedBNB)*100,  "%")
+print("F1-score = ", f1_score(y_test, predictedBNB, average='macro')*100, "%\n" 'Accuracy =', accuracy_score(y_test, predictedBNB)*100,  "%\nRecall = ", recallBNBclf, "\n" 'Avg Recall = ', mean(recallBNBclf)*100, "%")
 
 print()
 
 print("\n--Categorical Naive Bayes--")
-print("F1-score = ", f1_score(y_test, predictedCatNB, average='macro')*100, "%", "\n" 'Accuracy =', accuracy_score(y_test, predictedCatNB)*100, "%")
+print("F1-score = ", f1_score(y_test, predictedCatNB, average='macro')*100, "%\n" 'Accuracy =', accuracy_score(y_test, predictedCatNB)*100, "%\nRecall = ", recallCatNBclf, "\n" 'Avg Recall = ', mean(recallCatNBclf)*100, "%")
 
 print()
