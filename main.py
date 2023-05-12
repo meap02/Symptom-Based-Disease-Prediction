@@ -92,6 +92,39 @@ with open('models/svm/svm_onevrest.pkl', 'wb') as f:
 with open('models/svm/svm_onevrest.json', 'w') as f:
     json.dump({"accuracy": e_best_accuracy, "c": e_best_c, "kernel": e_best_kernel}, f)
 
+#naive-bayes
+
+from sklearn.naive_bayes import GaussianNB
+
+model = GaussianNB()
+
+model.fit(x_train, y_train);
+
+
 '''
 # -------------------------- Plotting -------------------------- #
 '''
+
+#for some visualization of the data set
+dataframe.head()
+dataframe.info()
+
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    ConfusionMatrixDisplay,
+    f1_score,
+    classification_report,
+)
+
+y_pred = model.predict(x_test)
+
+accuray = accuracy_score(y_pred, y_test)
+f1 = f1_score(y_pred, y_test, average="weighted")
+
+print("Accuracy:", accuray)
+print("F1 Score:", f1)
+
+# -------------------------- Saving -------------------------- #
+#pickle.dump(clf, open('models/decisionTree_.pkl', 'wb'))
+
