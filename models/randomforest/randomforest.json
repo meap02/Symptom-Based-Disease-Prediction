@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"accuracy": 0.9504065040650406, "estimators": 7, "depth": 19, "criteria": "log_loss", "bootstrap": true}
-=======
-{"accuracy": 0.9670050761421319, "estimators": 48, "depth": 8}
->>>>>>> 95f6f449527f449c39715b0743dc966114e052c6
+{"accuracy": 1.0, "estimators": 14, "depth": 16, "criteria": "log_loss", "bootstrap": false}
