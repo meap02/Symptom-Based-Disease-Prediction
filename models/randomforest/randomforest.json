@@ -1,1 +1,1 @@
-{"accuracy": 0.9670050761421319, "estimators": 48, "depth": 8}
+{"accuracy": 1.0, "estimators": 14, "depth": 16, "criteria": "log_loss", "bootstrap": false}

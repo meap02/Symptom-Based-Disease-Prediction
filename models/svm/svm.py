@@ -12,21 +12,34 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
 from sklearn.multiclass import OneVsRestClassifier, OneVsOneClassifier
 # -------------------------- Preprocessing -------------------------- #
-from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
+from sklearn.preprocessing import LabelEncoder, OrdinalEncoder, TargetEncoder
 # -------------------------- Metrics -------------------------- #
 from sklearn.model_selection import train_test_split, cross_val_score
 
 # -------------------------- Data -------------------------- #
+<<<<<<< HEAD
 dataframe = pd.read_csv('data/patil/dataset.csv').dropna(axis=1).sample(frac=1)
 x = dataframe.drop("Disease", axis=1)
 y = dataframe["Disease"]
 # print(dataframe.drop('Disease', axis=1))
+=======
+df = pd.read_csv('data/patil/dataset.csv').sample(frac=1)
+x = df.drop("Disease", axis=1)
+y = df["Disease"]
+#print(dataframe.drop('Disease', axis=1))
+>>>>>>> 0be6fed140b80bcc9477aac15c8cb582674a0330
 le = LabelEncoder()
-oe = OrdinalEncoder()
+te = TargetEncoder(target_type='binary', cv=6)
 y = le.fit_transform(y)
-x = oe.fit_transform(x)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.4, train_size=.6)
+x_train = te.fit_transform(x_train, y_train)
+x_test = te.transform(x_test)
 
+<<<<<<< HEAD
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.16, train_size=0.84)
+=======
+
+>>>>>>> 0be6fed140b80bcc9477aac15c8cb582674a0330
 e_best_accuracy = 0
 e_best_c = 0
 e_best_kernel = ""
