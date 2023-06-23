@@ -12,7 +12,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
 from sklearn.multiclass import OneVsRestClassifier, OneVsOneClassifier
 # -------------------------- Preprocessing -------------------------- #
-from sklearn.preprocessing import LabelEncoder, OrdinalEncoder, TargetEncoder
+from sklearn.preprocessing import LabelEncoder, OrdinalEncoder, TargetEncoder, OneHotEncoder
 # -------------------------- Metrics -------------------------- #
 from sklearn.model_selection import train_test_split, cross_val_score
 
@@ -24,11 +24,13 @@ x = df.drop("Disease", axis=1)
 y = df["Disease"]
 #print(dataframe.drop('Disease', axis=1))
 le = LabelEncoder()
-te = TargetEncoder(target_type='binary', cv=6)
+#te = TargetEncoder(target_type='binary', cv=4)
+one_e = OneHotEncoder()
+
 y = le.fit_transform(y)
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.4, train_size=.6)
-x_train = te.fit_transform(x_train, y_train)
-x_test = te.transform(x_test)
+one_e.fit(x)
+x = one_e.fit_transform(x)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.95, train_size=.05)
 
 
 e_best_accuracy = 0
@@ -38,7 +40,7 @@ e_best_kernel = ""
 s_best_accuracy = 0
 s_best_c = 0
 s_best_kernel = ""
-
+'''
 try:
     with open('models/svm/svm_onevrest.json', 'r') as f:
         data = json.load(f)
@@ -58,8 +60,9 @@ try:
         s_best_kernel = data['kernel']
 except Exception as e:
     print(e)
+'''
 # -------------------------- Models -------------------------- #
-for c in range(17, 30):
+for c in range(1, 30):
     for kernel in ['poly', 'rbf']:
         print("Attemting {c} C and {kernel} kernel".format(c=c, kernel=kernel))
         single = SVC(C = float(c), kernel=kernel, probability=False)
@@ -78,7 +81,7 @@ for c in range(17, 30):
             s_best_accuracy = s_evaluation
             s_best_c = c
             s_best_kernel = kernel
-
+'''
 with open('models/svm/svm.pkl', 'wb') as f:
     pickle.dump(single, f)
 with open('models/svm/svm.json', 'w') as f:
@@ -92,4 +95,3 @@ with open('models/svm/svm_onevrest.json', 'w') as f:
 
 '''
 # -------------------------- Plotting -------------------------- #
-'''
